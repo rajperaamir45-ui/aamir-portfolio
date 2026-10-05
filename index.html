@@ -2,72 +2,101 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Aamir Rajper | Portfolio</title>
-
-    <meta
-        name="description"
-        content="Personal portfolio of Aamir Rajper."
-    >
-
+    <meta name="description" content="Personal portfolio of Aamir Rajper.">
     <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
+    <!-- HEADER & NAVIGATION -->
     <header>
         <nav>
-            <a href="/" class="logo">Aamir Rajper</a>
+            <a href="index.html" class="logo">Aamir Rajper</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
 
-            <div class="nav-links">
-                <a href="#about">About</a>
-                <li><a href="services.html">Services</a></li>
-                <a href="#skills">Skills</a>
-                <a href="#projects">Projects</a>
-                <a href="#experience">Experience</a>
-                <a href="#education">Education</a>
-                <a href="#contact">Contact</a>
-            </div>
+                <!-- PORTFOLIO DROPDOWN -->
+                <li class="dropdown">
+                    <a href="index.html" class="dropdown-btn">Portfolio <span class="arrow">▾</span></a>
+                    <div class="dropdown-menu">
+                        <a href="index.html#about">
+                            <strong>About Me</strong>
+                            <span>Overview & background details</span>
+                        </a>
+                        <a href="index.html#experience">
+                            <strong>Experience</strong>
+                            <span>Engineering & career history</span>
+                        </a>
+                        <a href="index.html#education">
+                            <strong>Education</strong>
+                            <span>Degrees & certifications</span>
+                        </a>
+                        <a href="index.html#skills">
+                            <strong>Skills</strong>
+                            <span>Core technical proficiencies</span>
+                        </a>
+                        <a href="index.html#projects">
+                            <strong>Projects</strong>
+                            <span>Featured engineering work</span>
+                        </a>
+                    </div>
+                </li>
+
+                <!-- SERVICES DROPDOWN -->
+                <li class="dropdown">
+                    <a href="services.html" class="dropdown-btn">Services <span class="arrow">▾</span></a>
+                    <div class="dropdown-menu">
+                        <a href="services.html#power">
+                            <strong>Power & Energy</strong>
+                            <span>Specs, BOM & rate scheduling</span>
+                        </a>
+                        <a href="services.html#embedded">
+                            <strong>Embedded Systems</strong>
+                            <span>STM32 & automation design</span>
+                        </a>
+                        <a href="services.html#supply-chain">
+                            <strong>Supply Chain</strong>
+                            <span>Procurement & logistics</span>
+                        </a>
+                    </div>
+                </li>
+
+                <li><a href="index.html#contact" class="btn-nav">Contact</a></li>
+            </ul>
         </nav>
     </header>
 
-
     <main>
 
+        <!-- HERO SECTION -->
         <section id="hero">
             <p>Hello, I'm</p>
-
             <h1>Aamir Rajper</h1>
-
             <h2>Electrical & Electronics Engineer</h2>
-
             <p>
                 Building practical solutions across engineering,
                 automation, embedded systems, and technology.
             </p>
-
             <a href="#projects">View My Work</a>
             <a href="#contact">Contact Me</a>
         </section>
 
-
+        <!-- ABOUT SECTION -->
         <section id="about">
             <h2>About</h2>
             <p>
-                About me will go here.
+                About me details will go here.
             </p>
         </section>
 
-
+        <!-- SKILLS SECTION -->
         <section id="skills">
             <h2>Skills</h2>
             <p>
-                Skills will go here.
+                Skills grid will go here.
             </p>
         </section>
-
 
         <!-- PROJECTS SECTION -->
         <section id="projects">
@@ -122,24 +151,23 @@
             </div>
         </section>
 
-
+        <!-- EXPERIENCE SECTION -->
         <section id="experience">
             <h2>Experience</h2>
             <p>
-                Experience will go here.
+                Experience details will go here.
             </p>
         </section>
 
-
+        <!-- EDUCATION SECTION -->
         <section id="education">
             <h2>Education</h2>
             <p>
-                Education will go here.
+                Education details will go here.
             </p>
         </section>
 
-
-     <!-- CONTACT SECTION -->
+        <!-- CONTACT SECTION -->
         <section id="contact">
             <h2>Get In Touch</h2>
             <div class="contact-container">
@@ -151,17 +179,15 @@
                     <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="btn-secondary">LinkedIn Profile</a>
                 </div>
             </div>
-        </section>>
+        </section>
 
     </main>
 
-
+    <!-- FOOTER -->
     <footer>
-        <p>© 2026 Aamir Rajper. All rights reserved.</p>
+        <p>&copy; 2026 Aamir Rajper. All rights reserved.</p>
     </footer>
 
-
     <script src="js/main.js"></script>
-
 </body>
 </html>
