@@ -1,0 +1,5 @@
+:root{--bg:#0b1017;--surface:#131a24;--surface2:#1b2431;--ink:#e8edf3;--mute:#93a1b3;--line:#243042;--accent:#4da3ff;--r:14px;--wrap:1080px;
+--display:'Bricolage Grotesque',system-ui,sans-serif;--body:'IBM Plex Sans',system-ui,sans-serif}
+[data-theme=light]{--bg:#f4f6f9;--surface:#fff;--surface2:#eaeef4;--ink:#101722;--mute:#546275;--line:#d5dce6;--accent:#0b66d6}
+[data-lens=academic]{--accent:#a78bfa}[data-lens=corporate]{--accent:#f0b429}
+[data-theme=light][data-lens=academic]{--accent:#6d43e0}[data-theme=light][data-lens=corporate]{--accent:#a86a00}
