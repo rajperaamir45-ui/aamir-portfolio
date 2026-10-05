@@ -73,105 +73,116 @@
         <section id="hero">
             <p>Hello, I'm</p>
             <h1>Aamir Rajper</h1>
-            <h2>Electrical & Electronics Engineer</h2>
-            <p>
-                Building practical solutions across engineering,
-                automation, embedded systems, and technology.
+            <h2 class="hero-role">Electrical & Electronics Engineer</h2>
+            <p id="heroDesc">
+                Building practical solutions across engineering, automation, embedded systems, and technology.
             </p>
-            <a href="#projects">View My Work</a>
-            <a href="#contact">Contact Me</a>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <a href="#projects" class="btn-primary">View My Work</a>
+                <a href="assets/docs/Aamir_Rajper_General_CV.pdf" id="cvDownloadBtn" download class="btn-secondary">Download CV</a>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE PERSONA ACCESS SYSTEM -->
+        <section id="persona-auth" class="auth-section">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h3>🔐 Vault & Audience Access Control</h3>
+                    <p>Enter an access PIN to unlock personalized content, research papers, or executive BOM frameworks.</p>
+                </div>
+                <div class="auth-input-group">
+                    <input type="text" id="accessCodeInput" placeholder="Enter PIN (e.g. AC007 or CS007)" maxlength="10">
+                    <button type="button" onclick="verifyAccessCode()" class="btn-primary" style="padding: 0.6rem 1.5rem; border: none; cursor: pointer;">Authenticate</button>
+                    <button type="button" id="resetPinBtn" onclick="resetAccessCode()" class="btn-secondary" style="display:none; padding: 0.6rem 1.5rem; cursor: pointer;">Reset to Public</button>
+                </div>
+                <div id="modeBadge" class="mode-badge" style="display:none;"></div>
+            </div>
         </section>
 
         <!-- ABOUT SECTION -->
         <section id="about">
             <h2>About</h2>
-            <p>
-                About me details will go here.
-            </p>
+            <div class="about-content">
+                <h3 id="personaHeadline" style="color: var(--text-primary); margin-bottom: 0.5rem;">Multi-Disciplinary Engineering & Operations Focus</h3>
+                <p id="personaBio">
+                    I am an electrical engineer with specialized expertise spanning power distribution, embedded microcontrollers, and strategic procurement. I focus on bridging high-level technical designs with cost-efficient physical implementations.
+                </p>
+
+                <!-- Dynamic Focus Pillars -->
+                <div id="personaPillars" class="pillars-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
         </section>
 
         <!-- SKILLS SECTION -->
         <section id="skills">
-            <h2>Skills</h2>
-            <p>
-                Skills grid will go here.
-            </p>
+            <h2>Core Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>Power & Energy</h3>
+                    <ul>
+                        <li>Solar PV Systems</li>
+                        <li>BESS Integration</li>
+                        <li>Switchgear Sizing</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <h3>Embedded & Hardware</h3>
+                    <ul>
+                        <li>STM32 Microcontrollers</li>
+                        <li>Sensor Integration</li>
+                        <li>Digital Logic Design</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <h3>Supply Chain & Data</h3>
+                    <ul>
+                        <li>BOM Auditing</li>
+                        <li>Python & Pandas EDA</li>
+                        <li>Rate Scheduling</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
         <!-- PROJECTS SECTION -->
         <section id="projects">
             <h2>Featured Projects</h2>
-            <div class="projects-grid">
-
-                <div class="project-card">
-                    <div class="project-tags">
-                        <span class="tag">STM32</span>
-                        <span class="tag">Embedded Systems</span>
-                        <span class="tag">Sensors</span>
-                    </div>
-                    <h3>Smart Parking Guidance & Control System</h3>
-                    <p>
-                        Designed and built an automated vehicle guidance and gate control system using STM32 microcontrollers, HC-SR04 ultrasonic sensors, and servo actuators with local wireless architecture.
-                    </p>
-                    <div class="project-links">
-                        <a href="#" class="btn-link">View Details</a>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-tags">
-                        <span class="tag">Solar PV</span>
-                        <span class="tag">BESS</span>
-                        <span class="tag">Procurement</span>
-                    </div>
-                    <h3>Solar & Battery Energy Storage Measurement System</h3>
-                    <p>
-                        Developed standardized electrical measurement sheets and schedule of rates for power distribution, solar PV infrastructure, surge protection, and low-voltage BESS integrations.
-                    </p>
-                    <div class="project-links">
-                        <a href="#" class="btn-link">View Details</a>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Pandas</span>
-                        <span class="tag">Data Analysis</span>
-                    </div>
-                    <h3>Rental Market Exploratory Data Analysis</h3>
-                    <p>
-                        Executed statistical summary models, logarithmic distribution transformations, and multi-variable correlation matrix evaluations across property listings using Python and Pandas.
-                    </p>
-                    <div class="project-links">
-                        <a href="#" class="btn-link">View Details</a>
-                    </div>
-                </div>
-
+            <div id="projectsGrid" class="projects-grid">
+                <!-- Dynamically populated via JS based on persona -->
             </div>
         </section>
 
         <!-- EXPERIENCE SECTION -->
         <section id="experience">
             <h2>Experience</h2>
-            <p>
-                Experience details will go here.
-            </p>
+            <div id="experienceList" class="timeline-container">
+                <!-- Dynamically populated via JS based on persona -->
+            </div>
         </section>
 
         <!-- EDUCATION SECTION -->
         <section id="education">
             <h2>Education</h2>
-            <p>
-                Education details will go here.
-            </p>
+            <div id="educationList" class="education-grid">
+                <!-- Dynamically populated via JS based on persona -->
+            </div>
+        </section>
+
+        <!-- RESEARCH & PUBLICATIONS SECTION (AC007 Only) -->
+        <section id="research" style="display:none;">
+            <h2>Research & Academic Publications</h2>
+            <div id="researchGrid" class="research-grid">
+                <!-- Dynamically populated via JS for AC007 -->
+            </div>
         </section>
 
         <!-- CONTACT SECTION -->
         <section id="contact">
             <h2>Get In Touch</h2>
             <div class="contact-container">
-                <p>
+                <p id="contactLeadText">
                     I am open to opportunities in electrical engineering, supply chain procurement, power systems, and embedded automation. Feel free to reach out directly or connect with me!
                 </p>
                 <div class="contact-links">
@@ -182,6 +193,19 @@
         </section>
 
     </main>
+
+    <!-- PDF VIEWER MODAL OVERLAY -->
+    <div id="pdfModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle" style="color: var(--text-primary);">Document Viewer</h3>
+                <button type="button" onclick="closePdfModal()" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="pdfFrame" src="" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
 
     <!-- FOOTER -->
     <footer>
