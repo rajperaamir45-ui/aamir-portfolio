@@ -1,4 +1,5 @@
 import { person, lenses, stats, experience, projects, credentials } from '../data/profile.js';
+import { servicesHTML } from './services.js';
 import { getLens, setLens, score } from '../core/lens.js';
 const $ = s => document.querySelector(s);
 const WAVES = { sine:'M0 45 '+Array.from({length:40},(_,i)=>`L${i*20} ${45+30*Math.sin(i*.6)}`).join(' '),
@@ -25,6 +26,7 @@ export function render() {
   $('#projects').innerHTML = `<h2>Projects</h2><div class="filters">${['all',...all].map(t=>`<button data-f="${t}" aria-pressed="${t===filter}">${t}</button>`).join('')}</div>
     <div class="bento">${rank(projects,f).filter(p=>filter==='all'||p.tags.includes(filter)).map(p=>`
     <article class="card ${p.s?'top':''}"><h3>${p.title}</h3>${tags(p.tags,f)}<p>${p.blurb}</p><a class="more" href="${p.link}" target="_blank" rel="noopener">View files</a></article>`).join('')}</div>`;
+  $('#services').innerHTML = `<h2>Services</h2>${servicesHTML({compact:true})}`;
   const groups = { education:'Education', publication:'Publication', awards:'Award', learning:'Learning' };
   $('#credentials').innerHTML = `<h2>Credentials</h2><div class="bento">${rank(Object.entries(credentials).flatMap(([k,v])=>v.map(x=>({...x,k}))),f).map(c=>`
     <article class="card ${c.s?'top':''}"><p>${groups[c.k]}</p><h3>${c.title}</h3><p>${c.sub}</p>${c.note?`<p>${c.note}</p>`:''}</article>`).join('')}</div>`;

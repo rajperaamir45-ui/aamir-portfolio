@@ -51,3 +51,14 @@ export const credentials = {
   awards:[{ title:'PEC-FYDP funding award', sub:'Pakistan Engineering Council, 2024', note:'Selected nationwide for impactful final-year projects.', tags:['research'] }],
   learning:[{ title:'McKinsey Forward, Google Project Management, Aspire Leadership Program', sub:'Certifications', note:'', tags:['ops'] }]
 };
+// Services: add/reorder here. status: 'live' | 'soon'
+export const services = [
+  { id:'analytics', title:'Analytics', status:'live',
+    summary:'Turn operational data into numbers a team can act on.',
+    items:['KPI design and tracking for maintenance, operations and procurement','Excel and Google Sheets dashboards for equipment health and cost','Python, Pandas and SQL exploratory analysis','Root-cause analysis reports with clear next steps'] },
+  { id:'agentic-ops', title:'Agentic Workflow Ops', status:'live',
+    summary:'Hand repetitive operational work to AI agents, with people approving the steps that matter.',
+    items:['Map a manual process, such as procurement trackers or maintenance logs, into agent-ready steps','Build agent workflows that draft, check and route work','Document-to-summary pipelines, like Summa Bot','Logging so you can see exactly what the agent did'] },
+  { id:'next', title:'More services', status:'soon',
+    summary:'Next offering is being shaped. Get in touch if you have a problem you want solved.', items:[] }
+];

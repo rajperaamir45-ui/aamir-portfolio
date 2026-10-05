@@ -13,7 +13,7 @@ export function initSpotlight() {
 export function initPalette() {
   const d = $('#palette'), q = $('#pq'), ul = $('#pl');
   const cmds = [
-    ...['experience','projects','credentials','contact'].map(s => ({ n:'Go to ' + s, run:() => location.hash = s })),
+    ...['experience','projects','services','credentials','contact'].map(s => ({ n:'Go to ' + s, run:() => location.href = (s==='services' ? 'services.html' : 'index.html#' + s) })),
     ...Object.entries(lenses).map(([k,v]) => ({ n:'Lens: ' + v.label, run:() => setLens(k) })),
     { n:'Toggle theme', run: toggle }];
   let list = cmds, sel = 0;
