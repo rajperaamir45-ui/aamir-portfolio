@@ -42,7 +42,7 @@ function sign(value) {
         .createHmac(
             "sha256",
             process.env.AAMIR_AGENT_SESSION_SECRET || ""
-        )
+       )
         .update(value)
         .digest("base64")
         .replace(/\+/g, "-")
@@ -63,6 +63,18 @@ function accessDigest(
         .digest("hex");
 }
 
+function accessDigest(
+    accessId,
+    accessKey
+) {
+    return crypto
+        .createHash("sha256")
+        .update(
+            `${accessId}:${accessKey}`,
+            "utf8"
+        )
+        .digest("hex");
+}
 function safeEqualHex(
     left,
     right
@@ -94,6 +106,9 @@ function accessRecords() {
             JSON.parse(raw);
 
         if (!Array.isArray(parsed)) {
+
+
+
             return [];
         }
 
