@@ -1,5 +1,15 @@
 "use strict";
 
+const {
+    authenticate,
+    verifySession,
+    extractBearerToken
+} = require("../lib/auth");
+
+const {
+    getAgentContext
+} = require("../lib/agent-context");
+
 const GEMINI_MODEL =
     process.env.GEMINI_MODEL ||
     "gemini-3.1-flash-lite";
@@ -10,193 +20,38 @@ const GROQ_MODEL =
 
 const MAX_MESSAGE = 650;
 const MAX_HISTORY = 6;
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_REQUESTS = 8;
+
+const REQUEST_WINDOW_MS =
+    10 * 60 * 1000;
+
+const MAX_QUESTIONS_PER_IP =
+    8;
+
+const AUTH_WINDOW_MS =
+    15 * 60 * 1000;
+
+const MAX_AUTH_ATTEMPTS_PER_IP =
+    10;
+
+const MAX_DAILY_QUESTIONS_PER_ACCESS =
+    25;
+
 const TIMEOUT_MS = 8000;
 
-
-const buckets =
-    globalThis.__AAMIR_AGENT_BUCKETS ||
-    (globalThis.__AAMIR_AGENT_BUCKETS =
+const requestBuckets =
+    globalThis.__AAMIR_AGENT_REQUEST_BUCKETS ||
+    (globalThis.__AAMIR_AGENT_REQUEST_BUCKETS =
         new Map());
 
+const authBuckets =
+    globalThis.__AAMIR_AGENT_AUTH_BUCKETS ||
+    (globalThis.__AAMIR_AGENT_AUTH_BUCKETS =
+        new Map());
 
-const KNOWLEDGE = `
-You are the portfolio-navigation agent for Aamir Rajper.
-
-Your job is to help visitors understand and navigate
-his public professional portfolio.
-
-You are NOT a general-purpose chatbot.
-
-Do not invent credentials, dates, employers, projects,
-results, publications, links, clients or services.
-
-Answer only from this portfolio information.
-
-Keep answers concise and professional.
-
-Use the navigation markers exactly where useful.
-
-MARKERS:
-[[ABOUT]]
-[[EXPERIENCE]]
-[[PROJECTS]]
-[[ROBOT]]
-[[SUMMA]]
-[[CONVEYOR]]
-[[LED]]
-[[FPGA]]
-[[GESTURE]]
-[[EDUCATION]]
-[[PUBLICATION]]
-[[DOCUMENTS]]
-[[CV]]
-[[SERVICES]]
-[[CONTACT]]
-[[EMAIL]]
-[[LINKEDIN]]
-
-Aamir is an engineer with practical experience across
-electronics, automation, embedded systems, industrial
-technology and operations.
-
-PROFESSIONAL EXPERIENCE:
-
-Electrical Engineer — PAA
-01/2026 - 05/2026
-
-Load audits, wind assessments, aircraft illumination
-inspections across MD83 and Boeing 737 environments,
-and Solar PV + BESS feasibility modelling.
-
-Supply Chain Procurement Manager — AH Associates
-06/2024 - 04/2025
-
-End-to-end procurement, inventory tracking,
-vendor negotiations and ERP workflows.
-
-The current portfolio intentionally prioritizes these
-professional roles rather than internships.
-
-PROJECTS:
-
-Voice-Controlled Mobile Robot:
-Raspberry Pi 4, CNNs, STFT, sensors and motor control.
-Real-time offline voice-controlled robot for hazardous
-environment inspection.
-95% reported command accuracy.
-Bilingual Urdu and English support.
-
-Summa Bot:
-AI text and PDF summarization application.
-Bubble.io, NLP models, third-party APIs and HTTPS.
-Supports text, uploaded PDF files and online PDFs.
-
-Low-Cost Conveyor Belt Automation:
-Optical sensors, relay logic, timer relays and electrical
-schematics.
-Hands-free motor-control approach using existing plant
-infrastructure without requiring a PLC.
-
-Custom LED Matrix Device:
-Embedded C, PCB routing, microcontroller programming
-and power analysis.
-Custom driver PCB and firmware logic.
-
-FPGA-Based Security System:
-Verilog HDL, testbenches, simulation and IR sensors.
-Digital password keypad with nested IR-sensor priority alerts.
-
-Gesture-Controlled Robotic Car:
-ESP32, ESP-NOW, MPU6050 and C++.
-Low-latency gesture-driven vehicle with real-time tilt
-processing and peer-to-peer wireless communication.
-
-EDUCATION:
-
-Bachelor of Engineering in Electronics & Automation.
-Sukkur IBA University.
-Grade: 80%.
-Thesis: Voice Controlled Mobile Robot.
-
-PUBLICATION:
-
-International Journal of Engineering and Applied Physics.
-
-Applications of Augmented Reality in Industrial
-Manufacturing in the Era of Industry 5.0
-
-Role: Co-Author.
-
-Focus:
-Spatial Augmented Reality, human-machine collaboration,
-robotic motion visualization and real-time digital work
-instructions in smart factories.
-
-DOCUMENTS:
-
-CV
-Publication
-Future technical archive
-
-CV and publication are designed to open through the
-portfolio document viewer.
-
-SERVICES:
-
-Power & Electrical
-Embedded Systems
-Supply & Procurement
-
-COMING SOON:
-
-Engineering & Automation
-
-Agentic Ops & Analytics Solutions
-
-The future Agentic Ops & Analytics direction is intended
-to support business operations, analytics, decision-making
-and supply-chain-related workflows.
-
-Do NOT describe coming-soon services as already available.
-
-CONTACT:
-
-Karachi, Pakistan
-aamir.prof.edu@gmail.com
-https://www.linkedin.com/in/aamir-rajper-020b13223/
-
-NAVIGATION INTENT:
-
-Professor / researcher:
-[[ROBOT]] [[PUBLICATION]] [[EDUCATION]]
-
-Embedded AI:
-[[ROBOT]] [[PROJECTS]]
-
-Industrial automation:
-[[EXPERIENCE]] [[CONVEYOR]] [[PROJECTS]]
-
-Supply chain:
-[[EXPERIENCE]] [[SERVICES]]
-
-CV:
-[[CV]]
-
-Documents:
-[[DOCUMENTS]]
-
-Services:
-[[SERVICES]]
-
-Contact:
-[[CONTACT]] [[EMAIL]]
-
-When a visitor clearly asks for a particular item,
-direct them to it instead of explaining the whole site.
-`;
-
+const dailyBuckets =
+    globalThis.__AAMIR_AGENT_DAILY_BUCKETS ||
+    (globalThis.__AAMIR_AGENT_DAILY_BUCKETS =
+        new Map());
 
 const VALID_MARKERS =
     new Set([
@@ -219,22 +74,16 @@ const VALID_MARKERS =
         "LINKEDIN"
     ]);
 
-
 function headers(event) {
-
     return event.headers || {};
-
 }
-
 
 function header(
     event,
     name
 ) {
-
     const target =
         name.toLowerCase();
-
 
     for (
         const [
@@ -244,33 +93,23 @@ function header(
             headers(event)
         )
     ) {
-
         if (
             key.toLowerCase() ===
             target
         ) {
-
             return value || "";
-
         }
-
     }
 
-
     return "";
-
 }
-
 
 function response(
     status,
     body
 ) {
-
     return {
-
-        statusCode:
-            status,
+        statusCode: status,
 
         headers: {
             "Content-Type":
@@ -285,63 +124,94 @@ function response(
 
         body:
             JSON.stringify(body)
-
     };
-
 }
 
-
-function rateLimit(
-    ip
+function cleanupBucket(
+    bucket,
+    windowMs
 ) {
-
     const now =
         Date.now();
 
+    return bucket.filter(
+        timestamp =>
+            now - timestamp <
+            windowMs
+    );
+}
 
-    const list =
-        buckets.get(ip) || [];
-
+function rateLimit(
+    map,
+    key,
+    maxRequests,
+    windowMs
+) {
+    const current =
+        map.get(key) || [];
 
     const recent =
-        list.filter(
-            time =>
-                now - time <
-                WINDOW_MS
+        cleanupBucket(
+            current,
+            windowMs
         );
-
 
     if (
         recent.length >=
-        MAX_REQUESTS
+        maxRequests
     ) {
+        map.set(
+            key,
+            recent
+        );
 
-        return {
-            ok: false
-        };
-
+        return false;
     }
 
+    recent.push(
+        Date.now()
+    );
 
-    recent.push(now);
-
-    buckets.set(
-        ip,
+    map.set(
+        key,
         recent
     );
 
-
-    return {
-        ok: true
-    };
-
+    return true;
 }
 
+function dailyLimit(
+    id
+) {
+    const day =
+        new Date()
+            .toISOString()
+            .slice(0, 10);
+
+    const key =
+        `${id}:${day}`;
+
+    const current =
+        dailyBuckets.get(key) || 0;
+
+    if (
+        current >=
+        MAX_DAILY_QUESTIONS_PER_ACCESS
+    ) {
+        return false;
+    }
+
+    dailyBuckets.set(
+        key,
+        current + 1
+    );
+
+    return true;
+}
 
 function cleanMarkers(
     text
 ) {
-
     return String(text || "")
         .replace(
             /```/g,
@@ -358,17 +228,14 @@ function cleanMarkers(
                     : ""
         )
         .trim();
-
 }
-
 
 function safeHistory(
     history
 ) {
-
-    if (!Array.isArray(history))
+    if (!Array.isArray(history)) {
         return [];
-
+    }
 
     return history
         .slice(-MAX_HISTORY)
@@ -393,26 +260,22 @@ function safeHistory(
                     )
             })
         );
-
 }
-
 
 async function gemini(
     question,
-    history
+    history,
+    systemPrompt
 ) {
-
     const key =
         process.env.GEMINI_API_KEY;
 
-
-    if (!key)
+    if (!key) {
         return null;
-
+    }
 
     const controller =
         new AbortController();
-
 
     const timeout =
         setTimeout(
@@ -421,9 +284,7 @@ async function gemini(
             TIMEOUT_MS
         );
 
-
     try {
-
         const contents =
             safeHistory(history)
                 .map(
@@ -443,7 +304,6 @@ async function gemini(
                     })
                 );
 
-
         contents.push({
             role: "user",
             parts: [
@@ -454,7 +314,6 @@ async function gemini(
             ]
         });
 
-
         const endpoint =
             "https://generativelanguage.googleapis.com/v1beta/models/" +
             encodeURIComponent(
@@ -462,13 +321,11 @@ async function gemini(
             ) +
             ":generateContent";
 
-
         const result =
             await fetch(
                 endpoint,
                 {
-                    method:
-                        "POST",
+                    method: "POST",
 
                     headers: {
                         "Content-Type":
@@ -480,12 +337,11 @@ async function gemini(
 
                     body:
                         JSON.stringify({
-
                             systemInstruction: {
                                 parts: [
                                     {
                                         text:
-                                            KNOWLEDGE
+                                            systemPrompt
                                     }
                                 ]
                             },
@@ -499,7 +355,6 @@ async function gemini(
                                 maxOutputTokens:
                                     300
                             }
-
                         }),
 
                     signal:
@@ -507,14 +362,12 @@ async function gemini(
                 }
             );
 
-
-        if (!result.ok)
+        if (!result.ok) {
             return null;
-
+        }
 
         const data =
             await result.json();
-
 
         const text =
             (
@@ -528,46 +381,39 @@ async function gemini(
                 )
                 .join("");
 
-
         return {
             provider:
                 "gemini",
 
             answer:
-                cleanMarkers(text)
+                cleanMarkers(
+                    text
+                )
         };
 
     } catch {
-
         return null;
-
     } finally {
-
         clearTimeout(
             timeout
         );
-
     }
-
 }
-
 
 async function groq(
     question,
-    history
+    history,
+    systemPrompt
 ) {
-
     const key =
         process.env.GROQ_API_KEY;
 
-
-    if (!key)
+    if (!key) {
         return null;
-
+    }
 
     const controller =
         new AbortController();
-
 
     const timeout =
         setTimeout(
@@ -576,17 +422,14 @@ async function groq(
             TIMEOUT_MS
         );
 
-
     try {
-
         const messages = [
-
             {
                 role:
                     "system",
 
                 content:
-                    KNOWLEDGE
+                    systemPrompt
             },
 
             ...safeHistory(
@@ -600,16 +443,13 @@ async function groq(
                 content:
                     question
             }
-
         ];
-
 
         const result =
             await fetch(
                 "https://api.groq.com/openai/v1/chat/completions",
                 {
-                    method:
-                        "POST",
+                    method: "POST",
 
                     headers: {
                         "Content-Type":
@@ -621,7 +461,6 @@ async function groq(
 
                     body:
                         JSON.stringify({
-
                             model:
                                 GROQ_MODEL,
 
@@ -632,7 +471,6 @@ async function groq(
 
                             max_completion_tokens:
                                 300
-
                         }),
 
                     signal:
@@ -640,17 +478,14 @@ async function groq(
                 }
             );
 
-
-        if (!result.ok)
+        if (!result.ok) {
             return null;
-
+        }
 
         const data =
             await result.json();
 
-
         return {
-
             provider:
                 "groq",
 
@@ -660,23 +495,16 @@ async function groq(
                         ?.message?.content ||
                     ""
                 )
-
         };
 
     } catch {
-
         return null;
-
     } finally {
-
         clearTimeout(
             timeout
         );
-
     }
-
 }
-
 
 exports.handler =
     async event => {
@@ -685,7 +513,6 @@ exports.handler =
             event.httpMethod ===
             "OPTIONS"
         ) {
-
             return {
                 statusCode: 204,
 
@@ -700,24 +527,20 @@ exports.handler =
                         "POST, OPTIONS",
 
                     "Access-Control-Allow-Headers":
-                        "Content-Type, X-AR-Agent",
+                        "Content-Type, X-AR-Agent, Authorization",
 
                     "Access-Control-Max-Age":
                         "86400"
                 },
 
                 body: ""
-
             };
-
         }
-
 
         if (
             event.httpMethod !==
             "POST"
         ) {
-
             return response(
                 405,
                 {
@@ -726,9 +549,7 @@ exports.handler =
                         "Method not allowed."
                 }
             );
-
         }
-
 
         if (
             header(
@@ -736,7 +557,6 @@ exports.handler =
                 "x-ar-agent"
             ) !== "1"
         ) {
-
             return response(
                 403,
                 {
@@ -745,9 +565,7 @@ exports.handler =
                         "Rejected."
                 }
             );
-
         }
-
 
         const ip =
             header(
@@ -760,29 +578,11 @@ exports.handler =
             ) ||
             "unknown";
 
-
-        if (
-            !rateLimit(ip).ok
-        ) {
-
-            return response(
-                429,
-                {
-                    ok: false,
-                    error:
-                        "Too many requests. Please try again later."
-                }
-            );
-
-        }
-
-
         if (
             !event.body ||
             event.body.length >
                 12000
         ) {
-
             return response(
                 413,
                 {
@@ -791,21 +591,16 @@ exports.handler =
                         "Request too large."
                 }
             );
-
         }
-
 
         let payload;
 
         try {
-
             payload =
                 JSON.parse(
                     event.body
                 );
-
         } catch {
-
             return response(
                 400,
                 {
@@ -814,9 +609,136 @@ exports.handler =
                         "Invalid request."
                 }
             );
-
         }
 
+        /*
+         * ========================================================
+         * AUTHENTICATION
+         * ========================================================
+         */
+
+        if (
+            payload?.action ===
+            "authenticate"
+        ) {
+            if (
+                !rateLimit(
+                    authBuckets,
+                    ip,
+                    MAX_AUTH_ATTEMPTS_PER_IP,
+                    AUTH_WINDOW_MS
+                )
+            ) {
+                return response(
+                    429,
+                    {
+                        ok: false,
+                        error:
+                            "Too many access attempts. Please try again later."
+                    }
+                );
+            }
+
+            const accessId =
+                typeof payload?.accessId ===
+                "string"
+                    ? payload.accessId.trim()
+                    : "";
+
+            const accessKey =
+                typeof payload?.accessKey ===
+                "string"
+                    ? payload.accessKey
+                    : "";
+
+            const result =
+                authenticate(
+                    accessId,
+                    accessKey
+                );
+
+            if (!result) {
+                return response(
+                    401,
+                    {
+                        ok: false,
+                        error:
+                            "Invalid access credentials."
+                    }
+                );
+            }
+
+            return response(
+                200,
+                {
+                    ok: true,
+                    sessionToken:
+                        result.sessionToken,
+                    profile:
+                        result.profile
+                }
+            );
+        }
+
+        /*
+         * ========================================================
+         * ALL LLM REQUESTS REQUIRE A VALID SESSION
+         * ========================================================
+         */
+
+        const token =
+            extractBearerToken(
+                event
+            );
+
+        const session =
+            verifySession(
+                token
+            );
+
+        if (!session) {
+            return response(
+                401,
+                {
+                    ok: false,
+                    error:
+                        "Private agent access is required."
+                }
+            );
+        }
+
+        if (
+            !rateLimit(
+                requestBuckets,
+                ip,
+                MAX_QUESTIONS_PER_IP,
+                REQUEST_WINDOW_MS
+            )
+        ) {
+            return response(
+                429,
+                {
+                    ok: false,
+                    error:
+                        "Too many requests. Please try again later."
+                }
+            );
+        }
+
+        if (
+            !dailyLimit(
+                session.id
+            )
+        ) {
+            return response(
+                429,
+                {
+                    ok: false,
+                    error:
+                        "This private access has reached its daily question allowance."
+                }
+            );
+        }
 
         const question =
             typeof payload?.message ===
@@ -824,13 +746,11 @@ exports.handler =
                 ? payload.message.trim()
                 : "";
 
-
         if (
             !question ||
             question.length >
                 MAX_MESSAGE
         ) {
-
             return response(
                 400,
                 {
@@ -839,27 +759,31 @@ exports.handler =
                         `Question must be 1-${MAX_MESSAGE} characters.`
                 }
             );
-
         }
-
 
         const history =
             safeHistory(
                 payload?.history
             );
 
+        const systemPrompt =
+            getAgentContext(
+                session.role
+            );
 
+        /*
+         * Gemini first.
+         */
         const primary =
             await gemini(
                 question,
-                history
+                history,
+                systemPrompt
             );
-
 
         if (
             primary?.answer
         ) {
-
             return response(
                 200,
                 {
@@ -870,21 +794,21 @@ exports.handler =
                         primary.answer
                 }
             );
-
         }
 
-
+        /*
+         * Groq fallback.
+         */
         const secondary =
             await groq(
                 question,
-                history
+                history,
+                systemPrompt
             );
-
 
         if (
             secondary?.answer
         ) {
-
             return response(
                 200,
                 {
@@ -895,9 +819,7 @@ exports.handler =
                         secondary.answer
                 }
             );
-
         }
-
 
         return response(
             503,
@@ -907,5 +829,4 @@ exports.handler =
                     "Portfolio agent temporarily unavailable."
             }
         );
-
     };

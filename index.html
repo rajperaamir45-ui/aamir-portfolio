@@ -1187,21 +1187,25 @@
         type="button"
         aria-expanded="false"
         aria-controls="ar-agent-panel"
-        aria-label="Open Aamir Rajper portfolio agent"
+        aria-label="Open Aamir's portfolio agent"
     >
+        <span class="ar-agent-launcher-command">
+            <span class="ar-agent-command-icon">
+                ⌘
+            </span>
 
-        <span class="ar-agent-launcher-mark">
-            AR
+            <span>
+                Ask Aamir's portfolio agent...
+            </span>
         </span>
 
-        <span class="ar-agent-launcher-text">
-            Ask Portfolio
+        <span class="ar-agent-launcher-status">
+            AI
         </span>
 
         <span class="ar-agent-launcher-arrow">
             ↗
         </span>
-
     </button>
 
 
@@ -1215,27 +1219,61 @@
         <header class="ar-agent-header">
 
             <div>
-
                 <span class="ar-agent-eyebrow">
-                    PORTFOLIO GUIDE
+                    PORTFOLIO AGENT
                 </span>
 
                 <h2>
                     Aamir's Agent
                 </h2>
+            </div>
+
+            <div class="ar-agent-header-actions">
+
+                <span
+                    id="ar-agent-mode"
+                    class="ar-agent-mode"
+                >
+                    PUBLIC MODE
+                </span>
+
+                <button
+                    id="ar-agent-close"
+                    class="ar-agent-close"
+                    type="button"
+                    aria-label="Close portfolio agent"
+                >
+                    ×
+                </button>
 
             </div>
 
-            <button
-                id="ar-agent-close"
-                class="ar-agent-close"
-                type="button"
-                aria-label="Close portfolio agent"
-            >
-                ×
-            </button>
-
         </header>
+
+
+        <div class="ar-agent-intro">
+
+            <div class="ar-agent-signal">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div>
+
+                <strong id="ar-agent-state-title">
+                    Portfolio navigation
+                </strong>
+
+                <p id="ar-agent-state-description">
+                    Search or jump directly to a part of
+                    Aamir's portfolio. Private AI responses
+                    require authorized access.
+                </p>
+
+            </div>
+
+        </div>
 
 
         <div
@@ -1253,14 +1291,18 @@
 
                 <div class="ar-agent-message-body">
 
-                    Hi — I can help you find the right part
-                    of Aamir's portfolio.
+                    Welcome.
 
                     <br><br>
 
-                    Ask about projects, experience,
-                    education, research, the CV,
-                    documents or services.
+                    I can navigate you to projects,
+                    experience, education, research,
+                    documents, CV and services.
+
+                    <br><br>
+
+                    Authorized users can unlock the
+                    private AI agent below.
 
                 </div>
 
@@ -1269,45 +1311,54 @@
         </div>
 
 
-        <div class="ar-agent-suggestions">
+        <div
+            class="ar-agent-suggestions"
+            aria-label="Portfolio shortcuts"
+        >
 
             <button
                 type="button"
-                data-agent-question="I'm a professor or researcher. Which projects and research should I see?"
+                data-command="professor research"
+                data-agent-question="I'm a professor or researcher. Which projects, education and research should I review?"
             >
                 Professor / research
             </button>
 
             <button
                 type="button"
-                data-agent-question="Show me Aamir's embedded AI work."
+                data-command="embedded ai robot"
+                data-agent-question="Show me Aamir's strongest embedded AI and robotics work."
             >
                 Embedded AI
             </button>
 
             <button
                 type="button"
-                data-agent-question="Where can I find Aamir's CV?"
+                data-command="cv"
+                data-agent-question="Where can I find Aamir's CV and what is most relevant in it?"
             >
                 Find CV
             </button>
 
             <button
                 type="button"
-                data-agent-question="What experience is most relevant to industrial operations?"
+                data-command="industrial experience"
+                data-agent-question="Which of Aamir's experience is most relevant to industrial operations?"
             >
-                Industrial experience
+                Industrial
             </button>
 
             <button
                 type="button"
-                data-agent-question="What services are available or coming soon?"
+                data-command="services"
+                data-agent-question="What services are currently available and which are coming soon?"
             >
                 Services
             </button>
 
             <button
                 type="button"
+                data-command="contact"
                 data-agent-question="How can I contact Aamir?"
             >
                 Contact
@@ -1316,19 +1367,85 @@
         </div>
 
 
+        <section
+            id="ar-agent-access"
+            class="ar-agent-access"
+        >
+
+            <div class="ar-agent-access-heading">
+
+                <span>
+                    PRIVATE ACCESS
+                </span>
+
+                <small>
+                    Authorized users only
+                </small>
+
+            </div>
+
+            <form
+                id="ar-agent-access-form"
+                class="ar-agent-access-form"
+            >
+
+                <input
+                    id="ar-agent-access-id"
+                    type="text"
+                    maxlength="100"
+                    autocomplete="username"
+                    placeholder="Access ID"
+                    aria-label="Access ID"
+                >
+
+                <input
+                    id="ar-agent-access-key"
+                    type="password"
+                    maxlength="300"
+                    autocomplete="current-password"
+                    placeholder="Access key"
+                    aria-label="Access key"
+                >
+
+                <button
+                    id="ar-agent-unlock"
+                    type="submit"
+                >
+                    Unlock
+                </button>
+
+            </form>
+
+            <div
+                id="ar-agent-access-status"
+                class="ar-agent-access-status"
+                aria-live="polite"
+            ></div>
+
+        </section>
+
+
         <form
             id="ar-agent-form"
             class="ar-agent-form"
         >
 
-            <input
-                id="ar-agent-input"
-                type="text"
-                maxlength="650"
-                autocomplete="off"
-                placeholder="Ask about the portfolio..."
-                aria-label="Ask about the portfolio"
-            >
+            <div class="ar-agent-input-wrap">
+
+                <span class="ar-agent-input-symbol">
+                    ›
+                </span>
+
+                <input
+                    id="ar-agent-input"
+                    type="text"
+                    maxlength="650"
+                    autocomplete="off"
+                    placeholder="Search portfolio or unlock private AI..."
+                    aria-label="Search the portfolio or ask the private AI agent"
+                >
+
+            </div>
 
             <button
                 id="ar-agent-send"
@@ -1342,13 +1459,24 @@
 
 
         <div class="ar-agent-footer">
-            SITE-AWARE · NO GENERAL WEB SEARCH · 5 QUESTIONS / DAY
+
+            <span id="ar-agent-footer-left">
+                PUBLIC NAVIGATION · ZERO LLM
+            </span>
+
+            <button
+                id="ar-agent-logout"
+                type="button"
+                hidden
+            >
+                SIGN OUT
+            </button>
+
         </div>
 
     </aside>
 
 </div>
-
 
 <script src="js/agent.js"></script>
 
