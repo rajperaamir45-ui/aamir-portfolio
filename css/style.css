@@ -3558,3 +3558,56 @@ img {
 
 }
 
+
+
+/* =========================================
+   PROJECT RESOURCE LINKS
+========================================= */
+
+.project-document-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    width: fit-content;
+    max-width: 100%;
+
+    margin-top: 16px;
+    padding: 10px 13px;
+
+    border: 1px solid var(--line);
+    border-radius: 9px;
+
+    color: var(--accent, #77e7c4);
+    background: rgba(119, 231, 196, 0.035);
+
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.04em;
+
+    text-decoration: none;
+
+    transition:
+        background 180ms ease,
+        border-color 180ms ease,
+        transform 180ms ease;
+}
+
+.project-document-link:hover {
+    background: rgba(119, 231, 196, 0.09);
+    border-color: rgba(119, 231, 196, 0.4);
+    transform: translateY(-2px);
+}
+
+.project-document-link span:last-child {
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-document-link {
+        transition: none;
+    }
+}
+
