@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Components/Power Consideration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!--Stylesheet-->
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+        font-size: 20px;
+        background-color: antiquewhite;
+        background-image: url('background.jpg');
+
+
+      }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 0;
+      }
+
+      li {
+        float: left;
+      }
+
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+
+      li a:hover {
+        background-color: #111;
+      }
+      .active {
+        background-color: #4CAF50;
+      }
+      .row {
+        display: flex;
+      }
+
+
+      .column {
+        flex: 33.33%;
+        padding: 5px;
+      }
+</style>
+<body>
+    <ul>
+
+        <li><a href="../project.html">Home</a></li>
+        <li><a href = "outline.html">Outline</a></li>
+        <li><a href="Introduction.html">Introduction</a></li>
+        <li><a href="Design.html">Requirements</a></li>
+        <li><a href="sample_image.html">Sample Image</a></li>
+        <li><a href="principle.html">Principle</a></li>
+        <li><a class = 'active' href="components.html">Components/Power Consideration</a></li>
+       <li><a href="cost.html">Cost</a></li>
+       <li><a href="rights.html">Rights</a></li>
+      <li><a href="business_model.html">Business Model</a></li>
+      <li><a href="Challenges.html">Challenges</a></li>
+      <li><a href="Material.html">Material</a></li>
+
+
+     </ul>
+
+   <h1 align = 'center'><b><u><mark>Choice Of Components/Power Consideration</mark></u></b></h1>
+   <p>In our project there are several components that we use. </p>
+    <p>1.Max7219 IC</p>
+    <p>2.8x8 Led matrix</p>
+    <p>3.Resistors</p>
+    <p>4.Arduino</p>
+   <h1 align = 'center'><b><u><mark>Power Consideration</mark></u></b></h1>
+
+
+   <h2 align = 'left'> <u><mark>Max7219 IC</mark></u></h2>
+   <p>1.The maximum power rating of Max7219 IC is 6V.</p>
+    <p>2.The operating range of this IC is 4 to 5.5 volts.</p>
+   <p> 3.Maximum current allowed to draw through each segment pin :100mA. </p>
+    <p>4.Maximum current allowed to through each DIGIT ground pin: 500mA.</p>
+    <p>5.Low power consumption.</p>
+    <p>6.Data-to-Segment Delay Time: 2.2mSec.</p>
+    <p>7.Operating temperature: 0°C to +70°C.</p>
+    <p>8.Storage Temperature: -65°C to +150°C.</p>
+
+
+   <h2 align = 'left'> <u><mark>8x8 LED MAtrix:</mark></u></h2>
+   <p>All the LEDs on the 8x8 LED matrix have power rating of 5V. They cannot bear voltage more than 5V.</p>
+
+
+   <h2 align = 'left'> <u><mark>Resistors:</mark></u></h2>
+   <p>We use 6.2kΩ to limit the current so it will not damage ISET. The current in ISET should be limited so that it will not damage our IC.</p>
+
+   <h2 align = 'left'> <u><mark>Arduino UNO:</mark></u></h2>
+   <p>The Uno has in total three power pins of which one has a supply voltage of 3.3V and two pins provide 5V. All power pins have a maximum current of 50 mA.
+    </p>
+   <h1 align = 'center'><b><u><mark>Choice Of Components</mark></u></b></h1>
+
+  <h1><b><u><mark> Arduino Uno:</mark></u></b></h1>
+  <p>Arduino Uno is a microcontroller board based on the ATmega328P. It Has 14 digital input/output pins (of which 6 can be used as PWM outputs), 6 analog inputs, a 16 MHZ ceramic resonator, a USB connection,
+ a power jack, an ICSP header and a reset button.
+  </p>
+
+  <div class="row">
+    <p>It contains everything needed to support the microcontroller; simply connect it to a computer with a USB cable or power it with a AC-to-DC adapter or battery to get started. You can tinker with your Uno without worrying too much about doing something wrong, worst case scenario you can replace the chip fo a few dollars and start over again.</p>
+    <div class="column">
+      <img src="uno.jpg"  style="width:100%">
+    </div>
+  </div>
+  <h1><b><u><mark> 8x8 LED MATRIX:</mark></u></b></h1>
+
+  <div class="row">
+
+     <p>8x8 matrix consists of 64 dots LEDs. Consists of 8 rows and 8 columns. There is a LED for each pixel and these LEDs are connected to total of 16 pins. Generally, common anode and common cathode are the two types of 8x8 led matrix. They seems same their appearance.</p>
+
+    <div class="column">
+      <img src="led.jpg"  style="width:100%">
+    </div>
+  </div>
+  <h1><b><u><mark> Max7219 IC:</mark></u></b></h1>
+  <p> Max7219 IC is used to control the working of 8x8 LED Matrix. It consist of 24 pins from which 16 pins are connected to the LED matrix while the remaining pins are for VCC, ISET, GND, Chip Select, Clock, Data in.</p>
+  <div class="row">
+
+  <p>In our project we basically used 4 Max7219 IC for 4 LED Matrix. The Max7219 IC, we used is in SMD package, so it can be easily mount on the PCB. Max7219 IC is a serial input/output common-cathode display driver that is used to connect microprocessor with a 7-segment LED display or 64 individual LEDs or bar-graph displays.</p>
+ <div class="column">
+   <img src="ic.jpg" style="width:100%">
+ </div>
+ <div class="column">
+    <img src="ic2.jpg"  style="width:100%">
+  </div>
+</div>
+<h1><b><u><mark> Resistors:</mark></u></b></h1>
+
+<div class="row">
+    <p>Resistors of 6.2kΩ are used to control the current so in the case if extra amount of current is there, then the resistor will limit the current. In our project we basically used 4 resistors for 4 LED Matrix. The resistor we used is in SMD package, so they can be easily mount on the PCB.</p>
+   <div class="column">
+     <img src="resistor.jpg"  style="width:100%">
+   </div>
+ </div>
+
+
+
+
+
+
+</body>
+</html>

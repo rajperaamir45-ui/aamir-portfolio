@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Principle of Operations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!--Stylesheet-->
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+        font-size: 20px;
+        background-color: antiquewhite;
+        background-image: url('background.jpg');
+
+      }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 0;
+      }
+
+      li {
+        float: left;
+      }
+
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+
+      li a:hover {
+        background-color: #111;
+      }
+      .active {
+        background-color: #4CAF50;
+      }
+      * {
+        box-sizing: border-box;
+      }
+
+      .column {
+        float: left;
+        width: 33.33%;
+        padding: 5px;
+      }
+
+      /* Clearfix (clear floats) */
+      .row::after {
+        content: "";
+        clear: both;
+        display: table;
+      }
+      table, th, td {
+        border: 4px solid;
+        width: 50%;
+      }
+      img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+</style>
+<body>
+
+    <ul>
+        <li><a  href="../project.html">Home</a></li>
+        <li><a href = "outline.html">Outline</a></li>
+        <li><a href="Introduction.html">Introduction</a></li>
+        <li><a href="Design.html">Requirements</a></li>
+        <li><a href="sample_image.html">Sample Image</a></li>
+        <li><a class = 'active' href="principle.html">Principle</a></li>
+        <li><a href="components.html">Components/Power Consideration</a></li>
+        <li><a href="cost.html">Cost</a></li>
+        <li><a href="rights.html">Rights</a></li>
+      <li><a href="business_model.html">Business Model</a></li>
+      <li><a href="Challenges.html">Challenges</a></li>
+      <li><a href="Material.html">Material</a></li>
+
+      </ul>
+
+   <h1 align = 'center'><b><u><mark>Description of Principle of Operations</mark></u></b></h1>
+   <p>
+    Basically, 8x8 LED matrix work mainly with the help of an Max7219 IC. This 24 pin IC is capable of handling an 8x8 led matrix.
+   </p>
+    <div class="row">
+        <div class="column">
+      <img src="principle.jpg"  style="width:50%">
+        </div>
+
+        <div class="column">
+      <img src="principle2.jpg"  style="width:50%">
+        </div>
+
+    </div>
+    <p>
+        The MAX7219 is a compact, serial input/output common-cathode display driver that can interface microprocessors to 7-segment numeric LED displays of up to 8 digits, bar-graph displays, or 64 individual LEDs. Included on-chip are a BCD code-B decoder, multiplex scan circuitry, segment and digit drivers, and an 8x8 static RAM that stores each digit. This IC is 24 pin IC, 12 on each side. 16 pin is used for connecting it to the matrix. 2 pin is dedicated to ground and one is dedicated for VCC. Data from microcontroller is entered to the MAX7219 through DIN pin while another is connected to shift data from one module to another through DOUT pin. One pin is dedicated for Clock. Pin 12 is for chip select (CS) which determines number of modules connected together while programming of the project.
+    </p>
+   <h1 align = 'center'><b><u><mark>Rows Connection with Max7219 IC</mark></u></b></h1>
+   <table align = 'center'>
+    <tr>
+      <th>Rows corresponding to pins of Matrix</th>
+      <th>Connection with MAX7219 CNG & pin number of IC</th>
+    </tr>
+    <tr>
+      <td>Row 1, Pin 9</td>
+      <td>SEG DP, PIN 15</td>
+    </tr>
+    <tr>
+      <td>Row 2, Pin 14</td>
+      <td>SEG A, PIN 23</td>
+    </tr>
+    <tr>
+        <td>Row 3, Pin 8</td>
+        <td> SEG B, PIN 21</td>
+      </tr>
+      <tr>
+        <td>Row 4, Pin 12</td>
+        <td>SEG C, PIN 17</td>
+      </tr>
+      <tr>
+        <td>Row 5, Pin 1</td>
+        <td>SEG D, PIN 14</td>
+      </tr>
+      <tr>
+        <td>Row 6, Pin 7</td>
+        <td>SEG E, PIN 16</td>
+      </tr>
+      <tr>
+        <td>Row 7, Pin 2</td>
+        <td>SEG F, PIN 22</td>
+      </tr>
+      <tr>
+        <td>Row 8, Pin 5</td>
+        <td>SEG G, PIN 20</td>
+      </tr>
+  </table>
+  <h1 align = 'center'><b><u><mark>Column Connection with Max7219 IC</mark></u></b></h1>
+   <table align = 'center'>
+    <tr>
+      <th>Columns corresponding to pins of Matrix</th>
+      <th>Connection with MAX7219 CNG & pin number of IC</th>
+    </tr>
+    <tr>
+      <td>Column 1, Pin 13</td>
+      <td>DIG 0, PIN 2</td>
+    </tr>
+    <tr>
+      <td>Column 2, Pin 3</td>
+      <td>DIG 1, PIN 11</td>
+    </tr>
+    <tr>
+        <td>Column 3, Pin 4</td>
+        <td> DIG 2, PIN 6</td>
+      </tr>
+      <tr>
+        <td>Column 4, Pin 10</td>
+        <td>DIG 3, PIN 7</td>
+      </tr>
+      <tr>
+        <td>Column 5, Pin 6</td>
+        <td>DIG 4, PIN 3</td>
+      </tr>
+      <tr>
+        <td>Column 6, Pin 11</td>
+        <td>DIG 5, PIN 10</td>
+      </tr>
+      <tr>
+        <td>Column 7, Pin 15</td>
+        <td>DIG 6, PIN 5</td>
+      </tr>
+      <tr>
+        <td>Column 8, Pin 16</td>
+        <td>DIG 7, PIN 8</td>
+      </tr>
+  </table>
+
+  <h1 align = 'left'><b><u><mark>Connecting Led Matrix with Max7219 CNG:</mark></u></b></h1>
+  <p>
+    As we know that the anodes of a led matrix is connected together for each row so making one pin (terminal) and so that for cathode. Common anode is connected to SEGMENTS (A-H) while common cathode is connected to DIG (0-7) of the IC. BELOW table shows the configuration of pins of matrix with the MAX7219CNG.
+  </p>
+  <img src = 'cng.jpg' width= 50%>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Design Requirements</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!--Stylesheet-->
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+        font-size: 20px;
+        background-color: antiquewhite;
+        background-image: url('background.jpg');
+
+      }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 0;
+      }
+
+      li {
+        float: left;
+      }
+
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+
+      li a:hover {
+        background-color: #111;
+      }
+      .active {
+        background-color: #4CAF50;
+      }
+      table, th, td {
+        border: 4px solid;
+        width: 50%;
+      }
+      * {
+        box-sizing: border-box;
+      }
+
+      .row {
+        display: flex;
+      }
+
+
+      .column {
+        flex: 33.33%;
+        padding: 5px;
+      }
+</style>
+<body>
+    <ul>
+
+  <li><a href="../project.html">Home</a></li>
+  <li><a href = "outline.html">Outline</a></li>
+  <li><a href="Introduction.html">Introduction</a></li>
+  <li><a class = 'active' href="Design.html">Requirements</a></li>
+  <li><a href="sample_image.html">Sample Image</a></li>
+  <li><a href="principle.html">Principle</a></li>
+  <li><a href="components.html">Components/Power Consideration</a></li>
+  <li><a href="cost.html">Cost</a></li>
+  <li><a href="rights.html">Rights</a></li>
+  <li><a href="business_model.html">Business Model</a></li>
+  <li><a href="Challenges.html">Challenges</a></li>
+  <li><a href="Material.html">Material</a></li>
+
+
+
+   </ul>
+
+   <h1><b><u><mark> Design Requirements:</mark></u></b></h1>
+   <p> Our design of 8x8 LED Matrix needs several requirements:</p>
+   <table>
+    <tr>
+      <th>Components</th>
+      <th>Quantity</th>
+    </tr>
+    <tr>
+      <td>Arduino Uno</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>8x8 Led Matrix</td>
+      <td>4</td>
+    </tr>
+    <tr>
+        <td>Max7219 IC</td>
+        <td>4</td>
+      </tr>
+      <tr>
+        <td>Resistor 6.2KΩ</td>
+        <td>4</td>
+      </tr>
+  </table>
+
+  <h1><b><u><mark> Arduino Uno:</mark></u></b></h1>
+  <p>Arduino Uno is a microcontroller board based on the ATmega328P. It Has 14 digital input/output pins (of which 6 can be used as PWM outputs), 6 analog inputs, a 16 MHZ ceramic resonator, a USB connection,
+ a power jack, an ICSP header and a reset button.
+  </p>
+
+  <div class="row">
+    <p>It contains everything needed to support the microcontroller; simply connect it to a computer with a USB cable or power it with a AC-to-DC adapter or battery to get started. You can tinker with your Uno without worrying too much about doing something wrong, worst case scenario you can replace the chip fo a few dollars and start over again.</p>
+    <div class="column">
+      <img src="uno.jpg"  style="width:100%">
+    </div>
+  </div>
+  <h1><b><u><mark> 8x8 LED MATRIX:</mark></u></b></h1>
+
+  <div class="row">
+
+     <p>8x8 matrix consists of 64 dots LEDs. Consists of 8 rows and 8 columns. There is a LED for each pixel and these LEDs are connected to total of 16 pins. Generally, common anode and common cathode are the two types of 8x8 led matrix. They seems same their appearance.</p>
+
+    <div class="column">
+      <img src="led.jpg"  style="width:100%">
+    </div>
+  </div>
+  <h1><b><u><mark> Max7219 IC:</mark></u></b></h1>
+  <p> Max7219 IC is used to control the working of 8x8 LED Matrix. It consist of 24 pins from which 16 pins are connected to the LED matrix while the remaining pins are for VCC, ISET, GND, Chip Select, Clock, Data in.</p>
+  <div class="row">
+
+  <p>In our project we basically used 4 Max7219 IC for 4 LED Matrix. The Max7219 IC, we used is in SMD package, so it can be easily mount on the PCB. Max7219 IC is a serial input/output common-cathode display driver that is used to connect microprocessor with a 7-segment LED display or 64 individual LEDs or bar-graph displays.</p>
+ <div class="column">
+   <img src="ic.jpg" style="width:100%">
+ </div>
+ <div class="column">
+    <img src="ic2.jpg"  style="width:100%">
+  </div>
+</div>
+<h1><b><u><mark> Resistors:</mark></u></b></h1>
+
+<div class="row">
+    <p>Resistors of 6.2kΩ are used to control the current so in the case if extra amount of current is there, then the resistor will limit the current. In our project we basically used 4 resistors for 4 LED Matrix. The resistor we used is in SMD package, so they can be easily mount on the PCB.</p>
+   <div class="column">
+     <img src="resistor.jpg"  style="width:100%">
+   </div>
+ </div>
+
+</body>
+</html>
